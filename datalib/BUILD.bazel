@@ -1,0 +1,9 @@
+load("@rules_java//java:defs.bzl", "java_library")
+
+java_library(
+    name = "datalib",
+    srcs = ["src/main/java/org/acme/data/DataLibrary.java"],
+    data = glob(["data/*"]),
+    visibility = ["//visibility:public"],
+    deps = ["@bazel_tools//tools/java/runfiles"],
+)

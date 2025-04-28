@@ -1,0 +1,34 @@
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_binary", "kt_jvm_library", "kt_jvm_test")
+
+kt_jvm_binary(
+    name = "foo",
+    srcs = ["Main.kt"],
+    main_class = "foo.MainKt",
+    deps = [":foolib"],
+)
+
+kt_jvm_library(
+    name = "foolib",
+    #    testonly = True,
+    srcs = ["Foo.kt"],
+    deps = ["//datalib"],
+)
+
+kt_jvm_library(
+    name = "footest-deps",
+    testonly = True,
+    exports = [":foolib"],
+)
+
+kt_jvm_test(
+    name = "AllTests",
+    size = "small",
+    srcs = ["FooTest.kt"],
+    test_class = "foo.FooTest",
+    deps = [
+        "@maven//:junit_junit",
+        # use `:foolib` and the test will pass
+        # ":foolib",
+        ":footest-deps",
+    ],
+)
