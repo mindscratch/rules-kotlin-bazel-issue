@@ -1,0 +1,33 @@
+java_binary(
+    name = "jfoo",
+    srcs = ["Main.java"],
+    main_class = "foo.Main",
+    deps = [":jfoolib"],
+)
+
+java_library(
+    name = "jfoolib",
+    #    testonly = True,
+    srcs = ["Foo.java"],
+    deps = ["//datalib"],
+)
+
+java_library(
+    name = "jfootest-deps",
+    testonly = True,
+    exports = [":jfoolib"],
+)
+
+java_test(
+    name = "AllTests",
+    size = "small",
+    srcs = ["FooTest.java"],
+    test_class = "foo.FooTest",
+    deps = [
+        "@maven//:junit_junit",
+        # use `:jfoolib` and the test will pass
+	# ":jfoolib",
+        ":jfootest-deps",
+    ],
+)
+
